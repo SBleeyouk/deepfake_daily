@@ -42,7 +42,7 @@ router.get('/:id', async (req: Request, res: Response) => {
 
 router.post('/', authMiddleware, async (req: AuthRequest, res: Response) => {
   try {
-    const { title, category, tags, comments, attachmentURL, attachmentFile, thumbnailURL, timeOccurred, relatedEntries } = req.body;
+    const { title, category, tags, comments, attachmentURL, attachmentFile, thumbnailURL, timeOccurred } = req.body;
 
     let finalTitle = title;
     if (!finalTitle) {
@@ -63,13 +63,15 @@ router.post('/', authMiddleware, async (req: AuthRequest, res: Response) => {
       thumbnailURL,
       timeOccurred,
       submittedBy: req.userEmail || '',
-      relatedEntries,
     });
 
     res.status(201).json(entry);
   } catch (error: any) {
     console.error('Failed to create entry:', error);
-    res.status(500).json({ error: 'Failed to create entry' });
+    res.status(500).json({
+      error: 'Failed to create entry',
+      details: error?.message || String(error),
+    });
   }
 });
 

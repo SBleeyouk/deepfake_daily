@@ -27,41 +27,7 @@ router.post('/correlations', async (_req: Request, res: Response) => {
     }
 
     const entries = await listEntries();
-    const aiLinks = await analyzeCorrelations(entries);
-
-    // Build manual correlation links from relatedEntries field
-    const manualLinks: typeof aiLinks = [];
-    for (const entry of entries) {
-      if (entry.relatedEntries && entry.relatedEntries.length > 0) {
-        for (const relatedId of entry.relatedEntries) {
-          // Avoid duplicates (check both directions)
-          const exists = manualLinks.some(
-            (l) => (l.sourceId === entry.id && l.targetId === relatedId) ||
-                   (l.sourceId === relatedId && l.targetId === entry.id)
-          );
-          if (!exists) {
-            manualLinks.push({
-              sourceId: entry.id,
-              targetId: relatedId,
-              label: 'manually linked',
-              strength: 1.0,
-            });
-          }
-        }
-      }
-    }
-
-    // Merge AI + manual links, deduplicating by source-target pair
-    const linkKey = (s: string, t: string) => [s, t].sort().join('::');
-    const seen = new Set<string>();
-    const allLinks = [];
-    for (const link of [...manualLinks, ...aiLinks]) {
-      const key = linkKey(link.sourceId, link.targetId);
-      if (!seen.has(key)) {
-        seen.add(key);
-        allLinks.push(link);
-      }
-    }
+    const allLinks = await analyzeCorrelations(entries);
 
     // ALL entries become nodes (even if unconnected)
     const nodes = entries.map((e) => ({

@@ -20,12 +20,6 @@ function parseEntry(page: any): ResearchEntry {
     timeOccurred: props.TimeOccurred?.date?.start || '',
     submittedBy: props.SubmittedBy?.email || props.SubmittedBy?.rich_text?.[0]?.plain_text || '',
     correlationData: props.CorrelationData?.rich_text?.[0]?.plain_text || '',
-    relatedEntries: (() => {
-      try {
-        const raw = props.RelatedEntries?.rich_text?.[0]?.plain_text;
-        return raw ? JSON.parse(raw) : [];
-      } catch { return []; }
-    })(),
   };
 }
 
@@ -79,6 +73,8 @@ export async function getEntry(id: string): Promise<ResearchEntry> {
 }
 
 export async function createEntry(input: CreateEntryInput): Promise<ResearchEntry> {
+  const tags = Array.isArray(input.tags) ? input.tags : [];
+
   const properties: any = {
     Title: {
       title: [{ text: { content: input.title || 'Untitled' } }],
@@ -87,7 +83,7 @@ export async function createEntry(input: CreateEntryInput): Promise<ResearchEntr
       select: { name: input.category },
     },
     Tags: {
-      multi_select: input.tags.map((t) => ({ name: t })),
+      multi_select: tags.map((t) => ({ name: t })),
     },
     TimeAdded: {
       date: { start: new Date().toISOString() },
@@ -102,6 +98,11 @@ export async function createEntry(input: CreateEntryInput): Promise<ResearchEntr
   if (input.attachmentURL) {
     properties.AttachmentURL = { url: input.attachmentURL };
   }
+  if (input.attachmentFile) {
+    properties.AttachmentFile = {
+      files: [{ name: 'attachment', external: { url: input.attachmentFile } }],
+    };
+  }
   if (input.thumbnailURL) {
     properties.ThumbnailURL = { url: input.thumbnailURL };
   }
@@ -113,12 +114,6 @@ export async function createEntry(input: CreateEntryInput): Promise<ResearchEntr
       rich_text: [{ text: { content: input.submittedBy } }],
     };
   }
-  if (input.relatedEntries && input.relatedEntries.length > 0) {
-    properties.RelatedEntries = {
-      rich_text: [{ text: { content: JSON.stringify(input.relatedEntries) } }],
-    };
-  }
-
   const page = await notion.pages.create({
     parent: { database_id: databaseId },
     properties,
@@ -159,12 +154,6 @@ export async function updateEntry(id: string, input: UpdateEntryInput): Promise<
       ? { date: { start: input.timeOccurred } }
       : { date: null };
   }
-  if (input.relatedEntries !== undefined) {
-    properties.RelatedEntries = {
-      rich_text: [{ text: { content: JSON.stringify(input.relatedEntries) } }],
-    };
-  }
-
   const page = await notion.pages.update({
     page_id: id,
     properties,

@@ -5,7 +5,6 @@ import { api } from '../../api/client';
 import Button from '../common/Button';
 import CategorySelect from '../common/CategorySelect';
 import TagSelect from '../common/TagSelect';
-import RelatedEntrySelect from '../common/RelatedEntrySelect';
 import ConfirmModal from './ConfirmModal';
 import toast from 'react-hot-toast';
 
@@ -18,7 +17,6 @@ export default function EntryForm() {
   const [attachmentURL, setAttachmentURL] = useState('');
   const [thumbnailURL, setThumbnailURL] = useState('');
   const [timeOccurred, setTimeOccurred] = useState('');
-  const [relatedEntries, setRelatedEntries] = useState<string[]>([]);
   const [showConfirm, setShowConfirm] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [generatingHeadline, setGeneratingHeadline] = useState(false);
@@ -74,7 +72,6 @@ export default function EntryForm() {
         attachmentURL: attachmentURL || undefined,
         thumbnailURL: thumbnailURL || undefined,
         timeOccurred: timeOccurred || undefined,
-        relatedEntries: relatedEntries.length > 0 ? relatedEntries : undefined,
       });
       toast.success('Entry submitted successfully');
       navigate('/view');
@@ -213,11 +210,6 @@ export default function EntryForm() {
             style={{ width: '100%' }}
           />
         )}
-      </div>
-
-      <div style={fieldStyle}>
-        <label style={labelStyle}>Related Entries <span style={optionalStyle}>(optional — link to existing data)</span></label>
-        <RelatedEntrySelect value={relatedEntries} onChange={setRelatedEntries} />
       </div>
 
       <div style={fieldStyle}>

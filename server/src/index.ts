@@ -11,7 +11,9 @@ import uploadsRoutes from './routes/uploads.js';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const app = express();
 
-app.use(cors());
+app.use(cors({
+  origin: process.env.CORS_ORIGIN || '*',
+}));
 app.use(express.json());
 app.use('/uploads', express.static(path.resolve(__dirname, '../uploads')));
 

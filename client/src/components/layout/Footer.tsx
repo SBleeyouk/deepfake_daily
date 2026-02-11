@@ -6,37 +6,21 @@ export default function Footer() {
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'space-between',
-      padding: '20px 24px',
+      padding: '10px 24px',
+      background: colors.bgPrimary,
       borderTop: `1px solid ${colors.border}`,
-      background: colors.bgSecondary,
       fontSize: '0.8rem',
       color: colors.textMuted,
       flexWrap: 'wrap',
       gap: '12px',
     }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-        <div style={{
-          width: '32px',
-          height: '32px',
-          borderRadius: '4px',
-          background: colors.bgTertiary,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          fontSize: '0.6rem',
-          color: colors.textSecondary,
-        }}>
-          LOGO
-        </div>
-        <span>Research Center</span>
+        <img src="logo.png" alt="Logo" style={{ height: '24px' }} />
       </div>
 
-      <div style={{ textAlign: 'center' }}>
-        <span>Contact: research@example.edu</span>
-      </div>
-
-      <div style={{ textAlign: 'right' }}>
-        <span>All rights reserved. Data for research purposes only.</span>
+      <div style={{ textAlign: 'right', alignItems: 'center', display: 'flex', flexDirection: 'column'}}>
+        <span>Contact: sbleeyuk@media.mit.edu</span>
+        <span>Thank you for your contribution.</span>
       </div>
     </footer>
   );

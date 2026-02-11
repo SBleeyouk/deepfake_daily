@@ -1,7 +1,7 @@
 export interface ResearchEntry {
   id: string;
   title: string;
-  category: 'Terminology' | 'Incident' | 'Law/Policy';
+  category: 'Terminology' | 'Event' | 'Law/Policy' | 'Tech Research' | 'Other' ;
   tags: string[];
   comments: string;
   attachmentURL: string;
@@ -11,11 +11,12 @@ export interface ResearchEntry {
   timeOccurred: string;
   submittedBy: string;
   correlationData: string;
+  relatedEntries: string[];
 }
 
 export interface CreateEntryInput {
   title?: string;
-  category: 'Terminology' | 'Incident' | 'Law/Policy';
+  category: 'Terminology' | 'Event' | 'Law/Policy' | 'Tech Research' | 'Other' ;
   tags: string[];
   comments?: string;
   attachmentURL?: string;
@@ -23,17 +24,19 @@ export interface CreateEntryInput {
   thumbnailURL?: string;
   timeOccurred?: string;
   submittedBy: string;
+  relatedEntries?: string[];
 }
 
 export interface UpdateEntryInput {
   title?: string;
-  category?: 'Terminology' | 'Incident' | 'Law/Policy';
+  category?: 'Terminology' | 'Event' | 'Law/Policy' | 'Tech Research' | 'Other' ;
   tags?: string[];
   comments?: string;
   attachmentURL?: string;
   attachmentFile?: string;
   thumbnailURL?: string;
   timeOccurred?: string;
+  relatedEntries?: string[];
 }
 
 export interface CorrelationLink {

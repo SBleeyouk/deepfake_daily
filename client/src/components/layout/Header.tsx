@@ -9,7 +9,7 @@ export default function Header() {
       justifyContent: 'space-between',
       padding: '16px 24px',
       borderBottom: `1px solid ${colors.border}`,
-      background: colors.bgSecondary,
+      background: colors.bgPrimary,
       position: 'sticky',
       top: 0,
       zIndex: 100,
@@ -17,19 +17,8 @@ export default function Header() {
       gap: '8px',
     }}>
       <div className="header-brand">
-        <Link to="/" style={{ color: colors.textPrimary, fontWeight: 600, fontSize: '0.95rem' }}>
-          Deepfake Daily
-        </Link>
-      </div>
-
-      <div className="header-title" style={{ textAlign: 'center', flex: 1, minWidth: '200px' }}>
-        <Link to="/" style={{
-          color: colors.textPrimary,
-          fontWeight: 700,
-          fontSize: '1.1rem',
-          letterSpacing: '0.5px',
-        }}>
-          Deepfake Research Log
+        <Link to="/" style={{ color: colors.textPrimary, fontWeight: 700, fontSize: '1.1rem' }}>
+          AIG-Threat Database
         </Link>
       </div>
 

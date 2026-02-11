@@ -20,6 +20,12 @@ function parseEntry(page: any): ResearchEntry {
     timeOccurred: props.TimeOccurred?.date?.start || '',
     submittedBy: props.SubmittedBy?.email || props.SubmittedBy?.rich_text?.[0]?.plain_text || '',
     correlationData: props.CorrelationData?.rich_text?.[0]?.plain_text || '',
+    relatedEntries: (() => {
+      try {
+        const raw = props.RelatedEntries?.rich_text?.[0]?.plain_text;
+        return raw ? JSON.parse(raw) : [];
+      } catch { return []; }
+    })(),
   };
 }
 
@@ -107,6 +113,11 @@ export async function createEntry(input: CreateEntryInput): Promise<ResearchEntr
       rich_text: [{ text: { content: input.submittedBy } }],
     };
   }
+  if (input.relatedEntries && input.relatedEntries.length > 0) {
+    properties.RelatedEntries = {
+      rich_text: [{ text: { content: JSON.stringify(input.relatedEntries) } }],
+    };
+  }
 
   const page = await notion.pages.create({
     parent: { database_id: databaseId },
@@ -147,6 +158,11 @@ export async function updateEntry(id: string, input: UpdateEntryInput): Promise<
     properties.TimeOccurred = input.timeOccurred
       ? { date: { start: input.timeOccurred } }
       : { date: null };
+  }
+  if (input.relatedEntries !== undefined) {
+    properties.RelatedEntries = {
+      rich_text: [{ text: { content: JSON.stringify(input.relatedEntries) } }],
+    };
   }
 
   const page = await notion.pages.update({

@@ -1,6 +1,6 @@
 import { colors, categoryColors } from '../../theme';
 
-const CATEGORIES = ['Terminology', 'Incident', 'Law/Policy'];
+const CATEGORIES = ['Terminology', 'Incident', 'Law/Policy', 'Tech Research', 'Artwork', 'Other'] as const;
 
 interface FilterBarProps {
   categoryFilter: string;

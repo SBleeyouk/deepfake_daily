@@ -15,25 +15,23 @@ export default function HeroSection() {
       padding: '40px 24px',
       textAlign: 'center',
     }}>
-      <h1 style={{
+      <div className="header-brand" style={{
         fontSize: 'clamp(2rem, 5vw, 3.5rem)',
         fontWeight: 700,
         marginBottom: '16px',
         lineHeight: 1.2,
       }}>
-        Deepfake Research Log
-      </h1>
+        Collect Together<br></br>Together Prevent
+      </div>
 
       <p style={{
-        fontSize: 'clamp(1rem, 2vw, 1.2rem)',
         color: colors.textSecondary,
         maxWidth: '600px',
-        marginBottom: '40px',
+        marginBottom: '24px',
         lineHeight: 1.7,
       }}>
-        A collaborative research log for tracking deepfake-related incidents,
-        terminology, and policy developments. Upload data, discover correlations,
-        and visualize the evolving landscape of synthetic media.
+          This is a collaborative database tracking AI-generated threats - deepfakes, misinformation, AI scam, etc - related incidents, terminology, policy developments, and research papers.
+          <br></br>Upload data, discover patterns, and visualize how AI-generated text, images, video, and voice are being weaponized for harm at large scale.
       </p>
 
       <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap', justifyContent: 'center' }}>

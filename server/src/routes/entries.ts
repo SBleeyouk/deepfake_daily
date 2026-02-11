@@ -42,7 +42,7 @@ router.get('/:id', async (req: Request, res: Response) => {
 
 router.post('/', authMiddleware, async (req: AuthRequest, res: Response) => {
   try {
-    const { title, category, tags, comments, attachmentURL, attachmentFile, thumbnailURL, timeOccurred } = req.body;
+    const { title, category, tags, comments, attachmentURL, attachmentFile, thumbnailURL, timeOccurred, relatedEntries } = req.body;
 
     let finalTitle = title;
     if (!finalTitle) {
@@ -63,6 +63,7 @@ router.post('/', authMiddleware, async (req: AuthRequest, res: Response) => {
       thumbnailURL,
       timeOccurred,
       submittedBy: req.userEmail || '',
+      relatedEntries,
     });
 
     res.status(201).json(entry);

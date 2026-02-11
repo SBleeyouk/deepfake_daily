@@ -13,6 +13,7 @@ export interface Entry {
   timeAdded: string;
   timeOccurred: string;
   submittedBy: string;
+  relatedEntries: string[];
 }
 
 export function useEntries(filters?: { category?: string; tag?: string }) {

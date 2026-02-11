@@ -4,6 +4,7 @@ import { api } from '../../api/client';
 import Button from '../common/Button';
 import CategorySelect from '../common/CategorySelect';
 import TagSelect from '../common/TagSelect';
+import RelatedEntrySelect from '../common/RelatedEntrySelect';
 import toast from 'react-hot-toast';
 import type { Entry } from '../../hooks/useEntries';
 
@@ -36,6 +37,7 @@ export default function DetailPanel({ entry, onClose, onUpdate }: DetailPanelPro
         attachmentURL: editData.attachmentURL,
         thumbnailURL: editData.thumbnailURL,
         timeOccurred: editData.timeOccurred,
+        relatedEntries: (editData as any).relatedEntries,
       });
       toast.success('Entry updated');
       setEditing(false);
@@ -204,6 +206,24 @@ export default function DetailPanel({ entry, onClose, onUpdate }: DetailPanelPro
               alt=""
               style={{ maxWidth: '100%', borderRadius: '8px', border: `1px solid ${colors.border}` }}
             />
+          </div>
+        )}
+
+        {((entry as any).relatedEntries?.length > 0 || editing) && (
+          <div style={sectionStyle}>
+            <div style={labelStyle}>Related Entries</div>
+            {editing ? (
+              <RelatedEntrySelect
+                value={(editData as any).relatedEntries || []}
+                onChange={(v) => setEditData({ ...editData, relatedEntries: v } as any)}
+              />
+            ) : (
+              <RelatedEntrySelect
+                value={(entry as any).relatedEntries || []}
+                onChange={() => {}}
+                disabled
+              />
+            )}
           </div>
         )}
 

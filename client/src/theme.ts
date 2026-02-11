@@ -8,11 +8,14 @@ export const colors = {
   textMuted: '#666666',
 
   accentTerminology: '#6C5CE7',
-  accentIncident: '#FF6B6B',
+  accentIncident: '#FECA57',
   accentLawPolicy: '#00B894',
+  accentTechResearch: '#0984E3',
+  accentArtwork: '#FD79A8',
+  accentOther: '#E17055',
 
-  accentPrimary: '#4ECDC4',
-  accentHover: '#45B7AA',
+  accentPrimary: '#FFFFFF',
+  accentHover: '#D4D4D4',
   accentWarning: '#FECA57',
 
   graphNode: '#4ECDC4',
@@ -27,4 +30,7 @@ export const categoryColors: Record<string, string> = {
   Terminology: colors.accentTerminology,
   Incident: colors.accentIncident,
   'Law/Policy': colors.accentLawPolicy,
+  'Tech Research': colors.accentTechResearch,
+  Artwork: colors.accentArtwork,
+  Other: colors.accentOther,
 };

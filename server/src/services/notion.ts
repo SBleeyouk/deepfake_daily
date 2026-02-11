@@ -4,6 +4,19 @@ import type { ResearchEntry, CreateEntryInput, UpdateEntryInput } from '../types
 
 const notion = new Client({ auth: config.notionApiKey });
 const databaseId = config.notionDatabaseId;
+const NOTION_TEXT_LIMIT = 2000;
+
+function toRichTextBlocks(text: string) {
+  const blocks = [];
+  for (let i = 0; i < text.length; i += NOTION_TEXT_LIMIT) {
+    blocks.push({ text: { content: text.slice(i, i + NOTION_TEXT_LIMIT) } });
+  }
+  return blocks;
+}
+
+function fromRichText(richText: any[]): string {
+  return (richText || []).map((t: any) => t.plain_text).join('');
+}
 
 function parseEntry(page: any): ResearchEntry {
   const props = page.properties;
@@ -12,7 +25,7 @@ function parseEntry(page: any): ResearchEntry {
     title: props.Title?.title?.[0]?.plain_text || '',
     category: props.Category?.select?.name || '',
     tags: (props.Tags?.multi_select || []).map((t: any) => t.name),
-    comments: props.Comments?.rich_text?.[0]?.plain_text || '',
+    comments: fromRichText(props.Comments?.rich_text),
     attachmentURL: props.AttachmentURL?.url || '',
     attachmentFile: props.AttachmentFile?.files?.[0]?.external?.url || props.AttachmentFile?.files?.[0]?.file?.url || '',
     thumbnailURL: props.ThumbnailURL?.url || '',
@@ -91,9 +104,7 @@ export async function createEntry(input: CreateEntryInput): Promise<ResearchEntr
   };
 
   if (input.comments) {
-    properties.Comments = {
-      rich_text: [{ text: { content: input.comments } }],
-    };
+    properties.Comments = { rich_text: toRichTextBlocks(input.comments) };
   }
   if (input.attachmentURL) {
     properties.AttachmentURL = { url: input.attachmentURL };
@@ -140,7 +151,7 @@ export async function updateEntry(id: string, input: UpdateEntryInput): Promise<
   }
   if (input.comments !== undefined) {
     properties.Comments = {
-      rich_text: [{ text: { content: input.comments } }],
+      rich_text: input.comments ? toRichTextBlocks(input.comments) : [],
     };
   }
   if (input.attachmentURL !== undefined) {
